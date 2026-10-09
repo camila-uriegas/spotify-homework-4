@@ -13,28 +13,47 @@ function convertMsToMinSec(ms) {
 
 
 // IDs and secret token should come from Spotify
-localStorage.setItem("artist_id", "");
-localStorage.setItem("access_token", "");
-localStorage.setItem("track_id_1", "");
-localStorage.setItem("track_id_2", "");
-localStorage.setItem("track_id_3", "");
+localStorage.setItem("artist_id", "00FQb4jTyendYWaN8pK0wa");
+localStorage.setItem("access_token", "BQDCeRL8nQW3C8q8QPBa4EltMTJdaytav62_sjPIDPfZWkfrTIft_dq5Yg3laqSD0FxfOxyFX_2MfiJ9T5FpKh6rVpZN-6S7QrdcqH4wCqM3z15h7yQF13kkf1_8XEhZDG7tAp1p1nLq");
+localStorage.setItem("track_id_1", "2nMeu6UenVvwUktBCpLMK9");
+localStorage.setItem("track_id_2", "1Ist6PR2BZR3n2z2Y5R6S1");
+localStorage.setItem("track_id_3", "2mdEsXPu8ZmkHRRtAdC09e");
+localStorage.setItem("album_id_1", "5HOHne1wzItQlIYmLXLYfZ");
+localStorage.setItem("album_id_2", "1ORxRsK3MrSLvh7VQTF01F");
+localStorage.setItem("album_id_3", "5XpEKORZ4y6OrCZSKsi46A");
+localStorage.setItem("album_id_4", "5PW8nAtvf2HV8RYZFd4IrX");
 
 
-function load(){
+async function getData(url, token) {
+  const response = await fetch(url, {
+    headers: {Authorization: `Bearer ${token}` }
+  });
+  if (!response.ok) {
+    throw new Error(`Request failed (${response.status}): ${url}`);
+  }
+  return response.json();
+}
+
+async function load(){
     
     let artistID = localStorage.getItem("artist_id");
     let accessToken = localStorage.getItem("access_token");
     let trackID1 = localStorage.getItem("track_id_1");
     let trackID2 = localStorage.getItem("track_id_2");
     let trackID3 = localStorage.getItem("track_id_3");
+    let albumID1 = localStorage.getItem("album_id_1");
+    let albumID2  = localStorage.getItem("album_id_2");
+    let albumID3 = localStorage.getItem("album_id_3");
+    let albumID4 = localStorage.getItem("album_id_4");
     
+  try {
+    const artist = await getData(`https://api.spotify.com/v1/artists/${artistID}`, accessToken);
+    document.querySelector("#artist-name").textContent = artist.name;
+    document.querySelector(".artist-image img").src = artist.images[0].url;
+  } catch(error) {
+    console.error(error);
+  }
 
-
-
-
-
-
-    
 }
 load();
 
