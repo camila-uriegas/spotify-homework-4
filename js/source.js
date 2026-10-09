@@ -14,7 +14,7 @@ function convertMsToMinSec(ms) {
 
 // IDs and secret token should come from Spotify
 localStorage.setItem("artist_id", "00FQb4jTyendYWaN8pK0wa");
-localStorage.setItem("access_token", "BQDCeRL8nQW3C8q8QPBa4EltMTJdaytav62_sjPIDPfZWkfrTIft_dq5Yg3laqSD0FxfOxyFX_2MfiJ9T5FpKh6rVpZN-6S7QrdcqH4wCqM3z15h7yQF13kkf1_8XEhZDG7tAp1p1nLq");
+localStorage.setItem("access_token", "BQAqHh1wuEcTkfV_YbjD7RlOka9UxKjDANwE652RAK4AKDvj1326Ld4kfARFDCcUk0qfkAsZDok5ztWKBKN6uJp6ctxXNSp40NaCsoplwZUp_O8McLbUfqYWO0zCZnLHdiji-uuBr5kp");
 localStorage.setItem("track_id_1", "2nMeu6UenVvwUktBCpLMK9");
 localStorage.setItem("track_id_2", "1Ist6PR2BZR3n2z2Y5R6S1");
 localStorage.setItem("track_id_3", "2mdEsXPu8ZmkHRRtAdC09e");
@@ -62,6 +62,20 @@ async function load(){
       elm.querySelector(".track-album").textContent = track.album.name;
       elm.querySelector(".track-number").textContent = track.track_number;
       elm.querySelector(".track-duration").textContent = convertMsToMinSec(track.duration_ms);
+
+    }
+
+    // albums
+    const albumIDs = [albumID1, albumID2, albumID3, albumID4];
+    const albumElements = document.querySelectorAll(".album-card");
+    for (let i = 0; i < albumIDs.length; i++) {
+      const album = await getData(`https://api.spotify.com/v1/albums/${albumIDs[i]}`, accessToken);
+      const elm = albumElements[i];
+      elm.querySelector("img").src = album.images[0].url;
+      elm.querySelector("h3").textContent = album.name;
+      const year = album.release_date.slice(0, 4);
+      elm.querySelector("p").textContent = `${year} • ${album.album_type}`;
+
     }
 
   } catch(error) {
