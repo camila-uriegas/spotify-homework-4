@@ -50,6 +50,20 @@ async function load(){
     const artist = await getData(`https://api.spotify.com/v1/artists/${artistID}`, accessToken);
     document.querySelector("#artist-name").textContent = artist.name;
     document.querySelector(".artist-image img").src = artist.images[0].url;
+
+    // tracks
+    const trackIDs = [trackID1, trackID2, trackID3];
+    const trackElements = document.querySelectorAll(".track");
+    for (let i = 0; i < trackIDs.length; i++) {
+      const track = await getData(`https://api.spotify.com/v1/tracks/${trackIDs[i]}`, accessToken);
+      const elm = trackElements[i];
+      elm.querySelector("img").src = track.album.images[0].url;
+      elm.querySelector(".track-title").textContent = track.name;
+      elm.querySelector(".track-album").textContent = track.album.name;
+      elm.querySelector(".track-number").textContent = track.track_number;
+      elm.querySelector(".track-duration").textContent = convertMsToMinSec(track.duration_ms);
+    }
+
   } catch(error) {
     console.error(error);
   }
